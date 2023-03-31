@@ -16,10 +16,14 @@ def main():
     else:
         index = GPTSimpleVectorIndex.load_from_disk(index_file)
     while True:
-        inp = input("聞きたいことを教えてください。\n>>>")
-        print(index.query("日本語で答えてください。" + inp))
-        print()
-
+        val = input("聞きたいことを教えてください。\n>>>")
+        if val == 'q':
+            print('FINISH')
+            break
+        else:
+            print(index.query("日本語で答えてください。" + val))
+            print()
 
 if __name__ == "__main__":
     main()
+
