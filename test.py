@@ -1,5 +1,5 @@
 import os
-from llama_index import GPTSimpleVectorIndex, SimpleDirectoryReader
+from llama_index import GPTVectorStoreIndex, SimpleDirectoryReader
 from llama_index.llm_predictor.chatgpt import ChatGPTLLMPredictor
 
 def main():
@@ -11,17 +11,19 @@ def main():
     if not os.path.exists(index_file):
         os.makedirs(index_dir, exist_ok=True)
         documents = SimpleDirectoryReader(os.path.join(pwd_dir, "data")).load_data()
-        index = GPTSimpleVectorIndex.from_documents(documents)
-        index.save_to_disk(index_file)
+        index = GPTVectorStoreIndex.from_documents(documents)
+        index.storage_context.persist()
     else:
-        index = GPTSimpleVectorIndex.load_from_disk(index_file)
+        index = GPTVectorStoreIndex.load_from_disk(index_file)
+
+    query_engine = index.as_query_engine()
     while True:
-        val = input("聞きたいことを教えてください。\n>>>")
+        val = input("質問を入力してください \n>>>")
         if val == 'q':
             print('FINISH')
             break
         else:
-            print(index.query("日本語で答えてください。" + val))
+            print(query_engine.query("日本語で答えてください。" + val))
             print()
 
 if __name__ == "__main__":
