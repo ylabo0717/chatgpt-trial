@@ -1,7 +1,7 @@
 import os
 from llama_index import GPTVectorStoreIndex, SimpleDirectoryReader
 from llama_index import StorageContext, load_index_from_storage
-
+from langchain.chat_models import ChatOpenAI
 
 def check_files_exists(file_path_list):
     for file_path in file_path_list:
@@ -25,7 +25,8 @@ def main():
     else:
         documents = SimpleDirectoryReader(
             os.path.join(pwd_dir, "data")).load_data()
-        index = GPTVectorStoreIndex.from_documents(documents)
+        llm = ChatOpenAI(temperature=0, model_name="gpt-3.5-turbo")
+        index = GPTVectorStoreIndex.from_documents(documents=documents, llm=llm)
         index.storage_context.persist(persist_dir=storage_dir)
 
     query_engine = index.as_query_engine()
