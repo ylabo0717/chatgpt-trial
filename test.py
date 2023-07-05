@@ -25,8 +25,10 @@ def main():
     else:
         documents = SimpleDirectoryReader(
             os.path.join(pwd_dir, "data")).load_data()
-        llm = ChatOpenAI(temperature=0, model_name="gpt-3.5-turbo")
-        index = GPTVectorStoreIndex.from_documents(documents=documents, llm=llm)
+        llm = ChatOpenAI(temperature=0, model_name="gpt-4")
+        # llm = ChatOpenAI(temperature=0, model_name="gpt-3.5-turbo")
+        index = GPTVectorStoreIndex.from_documents(
+            documents=documents, llm=llm)
         index.storage_context.persist(persist_dir=storage_dir)
 
     query_engine = index.as_query_engine()
