@@ -1,4 +1,4 @@
-llama_index==0.6.1
+llama_index==0.7.0
 autopep8
 requests
 beautifulsoup4
